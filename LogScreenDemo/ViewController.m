@@ -38,7 +38,7 @@
 - (IBAction)test:(id)sender {
     [[LogScreen getInstance] changeVisible];
     self.count = 0;
-    [NSTimer scheduledTimerWithTimeInterval:0.01 target:self selector:@selector(giveLog) userInfo:nil repeats:YES];
+    [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(giveLog) userInfo:nil repeats:YES];
 }
 
 

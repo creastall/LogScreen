@@ -1,19 +1,19 @@
 
 
 #import "LogScreen.h"
-#import "LogScreenView.h"
+#import "LogScreenViewController.h"
 
 #define LogFileName @"LogScreenInfo.log"
-#define CarshFileName @"DCCrashInfo.log"
+#define CarshFileName @"CrashInfo.log"
 
-static int const bufferMaxSize = 6000;
-static int const clearbufferSize = 1000;
+static int const bufferMaxSize = 8000;
+static int const clearbufferSize = 6000;
 
 @interface LogScreen()
 
 @property (nonatomic, copy) NSString *crashInfoString;
 
-@property (nonatomic, strong) LogScreenView *logView;
+@property (nonatomic, strong) LogScreenViewController *logViewVC;
 
 @property (nonatomic, assign) NSInteger index;
 
@@ -39,33 +39,48 @@ static int const clearbufferSize = 1000;
         log.currentShowLog = [[NSMutableString alloc] init];
         log.topShowLog = [[NSMutableString alloc] init];
         log.bottomShowLog = [[NSMutableString alloc] init];
-        log.logView = nil;
         [log readCarshInfo];
         
     });
     return log;
 }
 
+- (LogScreenViewController*)logViewVC{
+    if (!_logViewVC) {
+        _logViewVC = [[UIStoryboard storyboardWithName:@"logView" bundle:nil] instantiateInitialViewController];
+        _logViewVC.view.hidden = YES;
+        _logViewVC.view.alpha = 0.0f;
+        [[UIApplication sharedApplication].keyWindow addSubview:_logViewVC.view];
+    }
+    return _logViewVC;
+}
+
 
 - (void)changeVisible {
-    !self.logView.hidden ? [self hideLogView] : [self showLogView];
+    !self.logViewVC.view.hidden ? [self hideLogView] : [self showLogView];
 }
 
 - (void)showLogView {
     
     [UIView animateWithDuration:0.4 animations:^{
-        self.logView.alpha = 1.0f;
+        self.logViewVC.view.alpha = 1.0f;
     }];
     
-    self.logView.hidden = NO;
+    self.logViewVC.view.hidden = NO;
     
-    self.logView.indexBlock = ^(NSInteger index) {
+    self.logViewVC.indexBlock = ^(NSInteger index) {
         LogScreen* logm = [LogScreen getInstance];
         logm.index = index;
-        [logm updateUIWithBottom:true];
+        if (index == 0) {
+            [logm updateUIWithBottom:false];
+        }
+        else{
+            [logm updateUIWithBottom:true];
+        }
+        
     };
     //清除所有当前日志，包括缓冲日志
-    self.logView.CleanButtonIndexBlock = ^(NSInteger index) {
+    self.logViewVC.CleanButtonIndexBlock = ^(NSInteger index) {
         LogScreen* logm = [LogScreen getInstance];
         logm.index = index;
         if (logm.index == 0) {
@@ -77,16 +92,20 @@ static int const clearbufferSize = 1000;
             [[NSFileManager defaultManager]removeItemAtPath:[logm loadPathWithName:CarshFileName] error:nil];
         }
     };
-    self.logView.closeBlock = ^(){
+    self.logViewVC.closeBlock = ^(){
         [[LogScreen getInstance] changeVisible];
+    };
+    
+    self.logViewVC.scrollViewDidEndDecelerating = ^(){
+        [[LogScreen getInstance] scrollViewDidEndDecelerating];
     };
 }
 
 - (void)hideLogView {
     [UIView animateWithDuration:0.4 animations:^{
-        self.logView.alpha = 0.0f;
+        self.logViewVC.view.alpha = 0.0f;
     }];
-    self.logView.hidden = YES;
+    self.logViewVC.view.hidden = YES;
 }
 
 //启动标准输出定向
@@ -120,9 +139,9 @@ static int const clearbufferSize = 1000;
 
 //从打印日志触发的事件
 -(void) dealLog:(NSString*)log{
-    CGFloat offsetY = self.logView.logTextView.contentOffset.y;
-    CGFloat height = self.logView.logTextView.contentSize.height;
-    CGFloat boundsheight = CGRectGetHeight(self.logView.bounds);
+    CGFloat offsetY = self.logViewVC.logTextView.contentOffset.y;
+    CGFloat height = self.logViewVC.logTextView.contentSize.height;
+    CGFloat boundsheight = CGRectGetHeight(self.logViewVC.view.bounds);
     if (height >= (offsetY + boundsheight)){
         //浏览模式
         if (self.currentShowLog.length < bufferMaxSize) {
@@ -191,18 +210,6 @@ static int const clearbufferSize = 1000;
     [[nf object] readInBackgroundAndNotify];
 }
 
-- (LogScreenView *)logView {
-    if (!_logView) {
-        _logView = [[LogScreenView alloc] initWithFrame:[UIScreen mainScreen].bounds];
-        _logView.backgroundColor = [UIColor groupTableViewBackgroundColor];
-        [[UIApplication sharedApplication].keyWindow addSubview:_logView];
-        _logView.logTextView.delegate = self;
-        _logView.hidden = YES;
-        _logView.alpha = 0.0f;
-    }
-    return _logView;
-}
-
 void UncaughtExceptionHandler(NSException *exception) {
     
     NSArray *arr = [exception callStackSymbols];
@@ -246,11 +253,11 @@ void UncaughtExceptionHandler(NSException *exception) {
     NSDate *newDate = [now dateByAddingTimeInterval:seconds];
     return newDate;
 }
-#pragma mark UIScrollView implementation
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
-    CGFloat offsetY = self.logView.logTextView.contentOffset.y;
-    CGFloat height = self.logView.logTextView.contentSize.height;
-    CGFloat boundsheight = CGRectGetHeight(self.logView.bounds);
+
+- (void)scrollViewDidEndDecelerating{
+    CGFloat offsetY = self.logViewVC.logTextView.contentOffset.y;
+    CGFloat height = self.logViewVC.logTextView.contentSize.height;
+    CGFloat boundsheight = CGRectGetHeight(self.logViewVC.view.bounds);
 
     if (height >= (offsetY + boundsheight)){
         if (offsetY == 0) {
@@ -304,10 +311,10 @@ void UncaughtExceptionHandler(NSException *exception) {
 -(void)updateUIWithBottom:(bool)bottom{
     //更新ui
     if (self.index == 0) {
-        [self.logView updateLog:self.currentShowLog  index: (int)self.index scrollToBottom:bottom];
+        [self.logViewVC updateLog:self.currentShowLog  index: (int)self.index scrollToBottom:bottom];
         
     }else if (self.index == 1) {
-        [self.logView updateLog:[self readCarshInfo] index: (int)self.index scrollToBottom:bottom];
+        [self.logViewVC updateLog:[self readCarshInfo] index: (int)self.index scrollToBottom:bottom];
     }
 }
 

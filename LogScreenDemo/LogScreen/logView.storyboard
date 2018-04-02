@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="17D47" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="NLp-bT-KNd">
+    <device id="retina3_5" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Log Screen View Controller-->
+        <scene sceneID="jYs-Ui-bFc">
+            <objects>
+                <viewController id="NLp-bT-KNd" customClass="LogScreenViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="uMW-MN-Xz0"/>
+                        <viewControllerLayoutGuide type="bottom" id="J9v-Gl-69m"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Uc3-Gj-uD5">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="3dP-Sk-iwX">
+                                <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                                <color key="backgroundColor" red="0.15294117647058825" green="0.15686274509803921" blue="0.13333333333333333" alpha="1" colorSpace="calibratedRGB"/>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="9"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <connections>
+                                    <outlet property="delegate" destination="NLp-bT-KNd" id="mLh-eK-dff"/>
+                                </connections>
+                            </textView>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="e7Q-2J-VGG">
+                                <rect key="frame" x="16" y="28" width="120" height="31"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="DGR-MN-2FO"/>
+                                    <constraint firstAttribute="width" constant="120" id="nQ0-HS-BYC"/>
+                                </constraints>
+                                <segments>
+                                    <segment title="Normal"/>
+                                    <segment title="Crash"/>
+                                </segments>
+                                <connections>
+                                    <action selector="switchClick:" destination="NLp-bT-KNd" eventType="valueChanged" id="8hC-CA-JJU"/>
+                                </connections>
+                            </segmentedControl>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uma-Sq-S2J">
+                                <rect key="frame" x="188" y="28" width="50" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="Hyw-f0-7SI"/>
+                                    <constraint firstAttribute="height" constant="30" id="QCJ-Vi-fkO"/>
+                                </constraints>
+                                <state key="normal" title="Close"/>
+                                <connections>
+                                    <action selector="closeClick:" destination="NLp-bT-KNd" eventType="touchUpInside" id="ZgE-Cd-X1C"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K9Q-kn-qgL">
+                                <rect key="frame" x="254" y="28" width="50" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="GRz-Ap-Ctd"/>
+                                    <constraint firstAttribute="height" constant="30" id="JKu-be-1gA"/>
+                                </constraints>
+                                <state key="normal" title="Clean"/>
+                                <connections>
+                                    <action selector="CleanClick:" destination="NLp-bT-KNd" eventType="touchUpInside" id="ypd-5d-4aW"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="3dP-Sk-iwX" firstAttribute="top" secondItem="Uc3-Gj-uD5" secondAttribute="top" constant="64" id="5V5-lJ-grW"/>
+                            <constraint firstItem="uma-Sq-S2J" firstAttribute="top" secondItem="Uc3-Gj-uD5" secondAttribute="top" constant="28" id="BgE-yf-n7P"/>
+                            <constraint firstItem="3dP-Sk-iwX" firstAttribute="leading" secondItem="Uc3-Gj-uD5" secondAttribute="leading" id="HeK-5x-Ugz"/>
+                            <constraint firstItem="K9Q-kn-qgL" firstAttribute="top" secondItem="Uc3-Gj-uD5" secondAttribute="top" constant="28" id="dqA-tc-MAG"/>
+                            <constraint firstAttribute="bottom" secondItem="3dP-Sk-iwX" secondAttribute="bottom" id="e7M-80-p2b"/>
+                            <constraint firstItem="e7Q-2J-VGG" firstAttribute="leading" secondItem="Uc3-Gj-uD5" secondAttribute="leading" constant="16" id="ef4-VQ-NHj"/>
+                            <constraint firstItem="e7Q-2J-VGG" firstAttribute="top" secondItem="Uc3-Gj-uD5" secondAttribute="top" constant="28" id="o54-WN-vzc"/>
+                            <constraint firstItem="K9Q-kn-qgL" firstAttribute="leading" secondItem="uma-Sq-S2J" secondAttribute="trailing" constant="16" id="oSN-xZ-pkv"/>
+                            <constraint firstAttribute="trailing" secondItem="K9Q-kn-qgL" secondAttribute="trailing" constant="16" id="uvS-kK-bjI"/>
+                            <constraint firstAttribute="trailing" secondItem="3dP-Sk-iwX" secondAttribute="trailing" id="zRf-Sr-SU4"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="cleanBtn" destination="K9Q-kn-qgL" id="dat-mm-8Gf"/>
+                        <outlet property="closeBtn" destination="uma-Sq-S2J" id="kQH-1e-BkM"/>
+                        <outlet property="logSwitch" destination="e7Q-2J-VGG" id="YU0-j8-Snl"/>
+                        <outlet property="logTextView" destination="3dP-Sk-iwX" id="Tuh-Dk-Tdk"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MWJ-IE-9iy" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="70" y="-165"/>
+        </scene>
+    </scenes>
+</document>

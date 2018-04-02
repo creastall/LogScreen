@@ -14,8 +14,9 @@
 		96C9A83F207117060099A1E0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 96C9A83E207117060099A1E0 /* Assets.xcassets */; };
 		96C9A842207117060099A1E0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 96C9A840207117060099A1E0 /* LaunchScreen.storyboard */; };
 		96C9A85A2071224A0099A1E0 /* LogScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = 96C9A8552071224A0099A1E0 /* LogScreen.m */; };
-		96C9A85B2071224A0099A1E0 /* LogScreenView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 96C9A8572071224A0099A1E0 /* LogScreenView.mm */; };
 		96C9A85C2071224A0099A1E0 /* UIWindow+LogScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = 96C9A8592071224A0099A1E0 /* UIWindow+LogScreen.m */; };
+		96C9A8702071F10B0099A1E0 /* logView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 96C9A86F2071F10B0099A1E0 /* logView.storyboard */; };
+		96C9A8732071F4A50099A1E0 /* LogScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96C9A8722071F4A50099A1E0 /* LogScreenViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,10 +32,11 @@
 		96C9A843207117060099A1E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		96C9A8542071224A0099A1E0 /* LogScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogScreen.h; sourceTree = "<group>"; };
 		96C9A8552071224A0099A1E0 /* LogScreen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogScreen.m; sourceTree = "<group>"; };
-		96C9A8562071224A0099A1E0 /* LogScreenView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogScreenView.h; sourceTree = "<group>"; };
-		96C9A8572071224A0099A1E0 /* LogScreenView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LogScreenView.mm; sourceTree = "<group>"; };
 		96C9A8582071224A0099A1E0 /* UIWindow+LogScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWindow+LogScreen.h"; sourceTree = "<group>"; };
 		96C9A8592071224A0099A1E0 /* UIWindow+LogScreen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWindow+LogScreen.m"; sourceTree = "<group>"; };
+		96C9A86F2071F10B0099A1E0 /* logView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = logView.storyboard; sourceTree = "<group>"; };
+		96C9A8712071F4A50099A1E0 /* LogScreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogScreenViewController.h; sourceTree = "<group>"; };
+		96C9A8722071F4A50099A1E0 /* LogScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogScreenViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,10 +96,11 @@
 			children = (
 				96C9A8542071224A0099A1E0 /* LogScreen.h */,
 				96C9A8552071224A0099A1E0 /* LogScreen.m */,
-				96C9A8562071224A0099A1E0 /* LogScreenView.h */,
-				96C9A8572071224A0099A1E0 /* LogScreenView.mm */,
 				96C9A8582071224A0099A1E0 /* UIWindow+LogScreen.h */,
 				96C9A8592071224A0099A1E0 /* UIWindow+LogScreen.m */,
+				96C9A86F2071F10B0099A1E0 /* logView.storyboard */,
+				96C9A8712071F4A50099A1E0 /* LogScreenViewController.h */,
+				96C9A8722071F4A50099A1E0 /* LogScreenViewController.m */,
 			);
 			path = LogScreen;
 			sourceTree = "<group>";
@@ -163,6 +166,7 @@
 			files = (
 				96C9A842207117060099A1E0 /* LaunchScreen.storyboard in Resources */,
 				96C9A83F207117060099A1E0 /* Assets.xcassets in Resources */,
+				96C9A8702071F10B0099A1E0 /* logView.storyboard in Resources */,
 				96C9A83D207117060099A1E0 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -175,7 +179,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				96C9A85C2071224A0099A1E0 /* UIWindow+LogScreen.m in Sources */,
-				96C9A85B2071224A0099A1E0 /* LogScreenView.mm in Sources */,
+				96C9A8732071F4A50099A1E0 /* LogScreenViewController.m in Sources */,
 				96C9A85A2071224A0099A1E0 /* LogScreen.m in Sources */,
 				96C9A83A207117060099A1E0 /* ViewController.m in Sources */,
 				96C9A837207117060099A1E0 /* AppDelegate.m in Sources */,
