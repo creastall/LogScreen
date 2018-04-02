@@ -64,13 +64,14 @@ static int const clearbufferSize = 1000;
         logm.index = index;
         [logm updateUIWithBottom:true];
     };
-    
+    //清除所有当前日志，包括缓冲日志
     self.logView.CleanButtonIndexBlock = ^(NSInteger index) {
         LogScreen* logm = [LogScreen getInstance];
         logm.index = index;
         if (logm.index == 0) {
-            [logm.topShowLog appendString:logm.currentShowLog];
+            [logm.topShowLog setString:@""];
             [logm.currentShowLog setString:@""];
+            [logm.bottomShowLog setString:@""];
             [logm updateUIWithBottom:true];
         }else if (logm.index == 1) {
             [[NSFileManager defaultManager]removeItemAtPath:[logm loadPathWithName:CarshFileName] error:nil];
