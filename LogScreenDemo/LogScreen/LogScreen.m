@@ -7,7 +7,7 @@
 #define CarshFileName @"CrashInfo.log"
 
 static int const bufferMaxSize = 8000;
-static int const clearbufferSize = 6000;
+static int const clearbufferSize = 4000;
 
 @interface LogScreen()
 
@@ -159,6 +159,7 @@ static int const clearbufferSize = 6000;
     else{
         //自动滚动模式
         if (self.bottomShowLog.length == 0) {
+
             [self.currentShowLog appendString:log];
             if (self.currentShowLog.length > bufferMaxSize) {
                 NSString* cutStr = [self.currentShowLog substringToIndex: self.currentShowLog.length - bufferMaxSize];
@@ -168,20 +169,25 @@ static int const clearbufferSize = 6000;
         }
         else{
             [self.bottomShowLog appendString:log];
-            if (self.bottomShowLog.length > clearbufferSize) {
-                NSString* bottomtopcut = [self.bottomShowLog substringToIndex: clearbufferSize];
-                [self.currentShowLog appendString:bottomtopcut];
-                [self.bottomShowLog deleteCharactersInRange:NSMakeRange(0, clearbufferSize)];
-                NSString* currenttopcut = [self.currentShowLog substringToIndex: clearbufferSize];
-                [self.topShowLog appendString:currenttopcut];
-                [self.currentShowLog deleteCharactersInRange:NSMakeRange(0, clearbufferSize)];
+            if (self.logViewVC.logSwitch.selectedSegmentIndex == 0) {
+                if (self.bottomShowLog.length > clearbufferSize) {
+                    NSString* bottomtopcut = [self.bottomShowLog substringToIndex: clearbufferSize];
+                    [self.currentShowLog appendString:bottomtopcut];
+                    [self.bottomShowLog deleteCharactersInRange:NSMakeRange(0, clearbufferSize)];
+                    NSString* currenttopcut = [self.currentShowLog substringToIndex: clearbufferSize];
+                    [self.topShowLog appendString:currenttopcut];
+                    [self.currentShowLog deleteCharactersInRange:NSMakeRange(0, clearbufferSize)];
+                }
+                else{
+                    [self.currentShowLog appendString:self.bottomShowLog];
+                    [self.bottomShowLog setString:@""];
+                    NSString* cutStr = [self.currentShowLog substringToIndex: self.bottomShowLog.length];
+                    [self.topShowLog appendString:cutStr];
+                    [self.currentShowLog deleteCharactersInRange:NSMakeRange(0,self.bottomShowLog.length)];
+                }
             }
             else{
-                [self.currentShowLog appendString:self.bottomShowLog];
-                [self.bottomShowLog setString:@""];
-                NSString* cutStr = [self.currentShowLog substringToIndex: self.bottomShowLog.length];
-                [self.topShowLog appendString:cutStr];
-                [self.currentShowLog deleteCharactersInRange:NSMakeRange(0,self.bottomShowLog.length)];
+                int a = 0;
             }
         }
         [self updateUIWithBottom:true];

@@ -22,4 +22,6 @@
 
 @property (weak, nonatomic) IBOutlet UITextView *logTextView;
 
+@property (weak, nonatomic) IBOutlet UISegmentedControl *logSwitch;
+
 @end

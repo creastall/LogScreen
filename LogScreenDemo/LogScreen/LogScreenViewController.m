@@ -12,7 +12,7 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *closeBtn;
 @property (weak, nonatomic) IBOutlet UIButton *cleanBtn;
-@property (weak, nonatomic) IBOutlet UISegmentedControl *logSwitch;
+
 
 @end
 
