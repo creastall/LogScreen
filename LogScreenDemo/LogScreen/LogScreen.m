@@ -56,6 +56,7 @@ static int const clearbufferSize = 4000;
 }
 
 
+
 - (void)changeVisible {
     !self.logViewVC.view.hidden ? [self hideLogView] : [self showLogView];
 }
@@ -99,9 +100,79 @@ static int const clearbufferSize = 4000;
     self.logViewVC.scrollViewDidEndDecelerating = ^(){
         [[LogScreen getInstance] scrollViewDidEndDecelerating];
     };
+    //搜索框有字符变化
+    self.logViewVC.searchTextFieldDidChangeValue = ^(NSString* changedStr){
+        NSMutableString* tmpsearch = [[NSMutableString alloc] init];
+        [tmpsearch appendString:[LogScreen getInstance].topShowLog];
+        [tmpsearch appendString:[LogScreen getInstance].currentShowLog];
+        [tmpsearch appendString:[LogScreen getInstance].bottomShowLog];
+        if (tmpsearch.length > 0) {
+            [[LogScreen getInstance].logViewVC setSearchLabelNumIntext:tmpsearch btnSearch:false];
+        }
+    };
+    //点击搜索按钮
+    self.logViewVC.textFieldShouldReturnBlock = ^(int locIndex){
+        NSMutableString* tmpsearch = [[NSMutableString alloc] init];
+        [tmpsearch appendString:[LogScreen getInstance].topShowLog];
+        [tmpsearch appendString:[LogScreen getInstance].currentShowLog];
+        [tmpsearch appendString:[LogScreen getInstance].bottomShowLog];
+        int startLocation = -1;
+        if (tmpsearch.length > 0) {
+            [[LogScreen getInstance].logViewVC setSearchLabelNumIntext:tmpsearch btnSearch:true];
+            //显示搜索结果的第一个word在当前log上面
+            NSMutableArray* searchResult = [LogScreen getInstance].logViewVC.searchResult;
+            if (searchResult && searchResult.count > 0) {
+                NSNumber* item = searchResult[locIndex];
+                NSString* search = [LogScreen getInstance].logViewVC.searchStr;
+                int blockShowNum = item.intValue + search.length - bufferMaxSize;
+                if (blockShowNum <= 0) {
+                    int extLogLength = bufferMaxSize;
+                    if (tmpsearch.length < extLogLength) {
+                        extLogLength = tmpsearch.length;
+                    }
+                    [[LogScreen getInstance].topShowLog setString:@""];
+                    [[LogScreen getInstance].currentShowLog setString:@""];
+                    [[LogScreen getInstance].currentShowLog appendString:[tmpsearch substringToIndex:extLogLength]];
+                    [[LogScreen getInstance].bottomShowLog setString:@""];
+                    [[LogScreen getInstance].bottomShowLog appendString:[tmpsearch substringFromIndex:extLogLength]];
+                    startLocation = item.intValue;
+                }
+                else{
+                    int numOfCleanBuffer = blockShowNum / clearbufferSize + 1;
+                    
+                    [[LogScreen getInstance].currentShowLog setString:@""];
+                    NSString* tmpcurrentlog = [tmpsearch substringToIndex:bufferMaxSize];
+                    //取出前bufferMaxSize个字符到currentShowLog中
+                    [[LogScreen getInstance].currentShowLog appendString:tmpcurrentlog];
+                    int otherCleanBufferLength = numOfCleanBuffer * clearbufferSize;
+                    if (otherCleanBufferLength > tmpsearch.length - bufferMaxSize) {
+                        otherCleanBufferLength = tmpsearch.length - bufferMaxSize;
+                    }
+                    NSString* tmpstr = [tmpsearch substringWithRange:NSMakeRange(bufferMaxSize, otherCleanBufferLength)];
+                    //取出后面连续numOfCleanBuffer个clearbufferSize大小的字符串块,添加到currentShowLog中
+                    [[LogScreen getInstance].currentShowLog appendString: tmpstr];
+                    //计算现在currentShowLog的字符个数
+                    int currentloglength = [LogScreen getInstance].currentShowLog.length;
+                    NSString* tmpTopLog = [[LogScreen getInstance].currentShowLog substringToIndex:(currentloglength - bufferMaxSize)];
+                    //取出前(currentloglength - bufferMaxSize)个字符，准备添加到topShowLog中
+                    [[LogScreen getInstance].topShowLog setString:@""];
+                    [[LogScreen getInstance].topShowLog appendString:tmpTopLog];
+                    //删除currentShowLog前bufferMaxSize个字符
+                    [[LogScreen getInstance].currentShowLog deleteCharactersInRange:NSMakeRange(0,(currentloglength - bufferMaxSize))];
+                    [[LogScreen getInstance].bottomShowLog setString:@""];
+                    NSString* tmpbottomlog = [tmpsearch substringFromIndex: bufferMaxSize + otherCleanBufferLength];
+                    [[LogScreen getInstance].bottomShowLog appendString:tmpbottomlog];
+                    startLocation = item.intValue - [LogScreen getInstance].topShowLog.length;
+                }
+                [[LogScreen getInstance] updateUIWithBottom:false];
+            }
+        }
+        return startLocation;
+    };
 }
 
 - (void)hideLogView {
+    
     [UIView animateWithDuration:0.4 animations:^{
         self.logViewVC.view.alpha = 0.0f;
     }];
@@ -159,24 +230,27 @@ static int const clearbufferSize = 4000;
     else{
         //自动滚动模式
         if (self.bottomShowLog.length == 0) {
-
             [self.currentShowLog appendString:log];
             if (self.currentShowLog.length > bufferMaxSize) {
                 NSString* cutStr = [self.currentShowLog substringToIndex: self.currentShowLog.length - bufferMaxSize];
                 [self.topShowLog appendString:cutStr];
                 [self.currentShowLog deleteCharactersInRange:NSMakeRange(0,self.currentShowLog.length - bufferMaxSize)];
+                
             }
+            [self updateUIWithBottom:[LogScreen getInstance].logViewVC.searchStr.length==0];
         }
         else{
             [self.bottomShowLog appendString:log];
             if (self.logViewVC.logSwitch.selectedSegmentIndex == 0) {
                 if (self.bottomShowLog.length > clearbufferSize) {
-                    NSString* bottomtopcut = [self.bottomShowLog substringToIndex: clearbufferSize];
-                    [self.currentShowLog appendString:bottomtopcut];
-                    [self.bottomShowLog deleteCharactersInRange:NSMakeRange(0, clearbufferSize)];
-                    NSString* currenttopcut = [self.currentShowLog substringToIndex: clearbufferSize];
-                    [self.topShowLog appendString:currenttopcut];
-                    [self.currentShowLog deleteCharactersInRange:NSMakeRange(0, clearbufferSize)];
+                    int a = 0;
+                    //下面代码的作用是，当还有日志持续输出时，从任意一个位置向上滑动到当前显示界面的底部，会出现一直循环到最底部
+//                    NSString* bottomtopcut = [self.bottomShowLog substringToIndex: clearbufferSize];
+//                    [self.currentShowLog appendString:bottomtopcut];
+//                    [self.bottomShowLog deleteCharactersInRange:NSMakeRange(0, clearbufferSize)];
+//                    NSString* currenttopcut = [self.currentShowLog substringToIndex: clearbufferSize];
+//                    [self.topShowLog appendString:currenttopcut];
+//                    [self.currentShowLog deleteCharactersInRange:NSMakeRange(0, clearbufferSize)];
                 }
                 else{
                     [self.currentShowLog appendString:self.bottomShowLog];
@@ -186,12 +260,12 @@ static int const clearbufferSize = 4000;
                     [self.currentShowLog deleteCharactersInRange:NSMakeRange(0,self.bottomShowLog.length)];
                 }
             }
-            else{
-                int a = 0;
-            }
         }
-        [self updateUIWithBottom:true];
+//        [self updateUIWithBottom:[LogScreen getInstance].logViewVC.searchStr.length==0];
     }
+    [self.logViewVC addSearchLabelNumInaddedtext:log];
+
+    
 }
 
 // 重定向之后的NSLog输出
@@ -308,7 +382,8 @@ void UncaughtExceptionHandler(NSException *exception) {
                 [self.currentShowLog appendString:self.bottomShowLog];
                 [self.bottomShowLog setString:@""];
             }
-            [self updateUIWithBottom:true];
+            
+            [self updateUIWithBottom:false];
         }
     }
 

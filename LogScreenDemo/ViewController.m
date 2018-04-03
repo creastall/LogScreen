@@ -21,15 +21,23 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+
 }
+
+
+
 - (void)giveLog {
     self.count++;
-    if (self.count > 400) {
+    if (self.count > 10000) {
         return;
     }
     NSLog(@"NSTimer count = %d",self.count);
 }
 
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -38,7 +46,7 @@
 - (IBAction)test:(id)sender {
     [[LogScreen getInstance] changeVisible];
     self.count = 0;
-    [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(giveLog) userInfo:nil repeats:YES];
+    [NSTimer scheduledTimerWithTimeInterval:0.2 target:self selector:@selector(giveLog) userInfo:nil repeats:YES];
 }
 
 
