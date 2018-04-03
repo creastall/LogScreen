@@ -230,34 +230,46 @@ static int const clearbufferSize = 4000;
     else{
         //自动滚动模式
         if (self.bottomShowLog.length == 0) {
-            [self.currentShowLog appendString:log];
-            if (self.currentShowLog.length > bufferMaxSize) {
-                NSString* cutStr = [self.currentShowLog substringToIndex: self.currentShowLog.length - bufferMaxSize];
-                [self.topShowLog appendString:cutStr];
-                [self.currentShowLog deleteCharactersInRange:NSMakeRange(0,self.currentShowLog.length - bufferMaxSize)];
-                
+            //非搜索模式下，滚动当前显示
+            if (self.logViewVC.searchResult.count == 0) {
+                [self.currentShowLog appendString:log];
+                if (self.currentShowLog.length > bufferMaxSize) {
+                    NSString* cutStr = [self.currentShowLog substringToIndex: self.currentShowLog.length - bufferMaxSize];
+                    [self.topShowLog appendString:cutStr];
+                    [self.currentShowLog deleteCharactersInRange:NSMakeRange(0,self.currentShowLog.length - bufferMaxSize)];
+                    
+                }
             }
+            //搜索模式下，不滚动当前显示
+            else{
+                [self.bottomShowLog appendString:log];
+            }
+
             [self updateUIWithBottom:[LogScreen getInstance].logViewVC.searchStr.length==0];
         }
         else{
             [self.bottomShowLog appendString:log];
             if (self.logViewVC.logSwitch.selectedSegmentIndex == 0) {
                 if (self.bottomShowLog.length > clearbufferSize) {
-                    int a = 0;
                     //下面代码的作用是，当还有日志持续输出时，从任意一个位置向上滑动到当前显示界面的底部，会出现一直循环到最底部
-//                    NSString* bottomtopcut = [self.bottomShowLog substringToIndex: clearbufferSize];
-//                    [self.currentShowLog appendString:bottomtopcut];
-//                    [self.bottomShowLog deleteCharactersInRange:NSMakeRange(0, clearbufferSize)];
-//                    NSString* currenttopcut = [self.currentShowLog substringToIndex: clearbufferSize];
-//                    [self.topShowLog appendString:currenttopcut];
-//                    [self.currentShowLog deleteCharactersInRange:NSMakeRange(0, clearbufferSize)];
+                    if (self.logViewVC.searchResult.count == 0) {
+                        NSString* bottomtopcut = [self.bottomShowLog substringToIndex: clearbufferSize];
+                        [self.currentShowLog appendString:bottomtopcut];
+                        [self.bottomShowLog deleteCharactersInRange:NSMakeRange(0, clearbufferSize)];
+                        NSString* currenttopcut = [self.currentShowLog substringToIndex: clearbufferSize];
+                        [self.topShowLog appendString:currenttopcut];
+                        [self.currentShowLog deleteCharactersInRange:NSMakeRange(0, clearbufferSize)];
+                    }
                 }
                 else{
-                    [self.currentShowLog appendString:self.bottomShowLog];
-                    [self.bottomShowLog setString:@""];
-                    NSString* cutStr = [self.currentShowLog substringToIndex: self.bottomShowLog.length];
-                    [self.topShowLog appendString:cutStr];
-                    [self.currentShowLog deleteCharactersInRange:NSMakeRange(0,self.bottomShowLog.length)];
+                    //非搜索模式下，滚动当前显示
+                    if (self.logViewVC.searchResult.count == 0) {
+                        [self.currentShowLog appendString:self.bottomShowLog];
+                        [self.bottomShowLog setString:@""];
+                        NSString* cutStr = [self.currentShowLog substringToIndex: self.bottomShowLog.length];
+                        [self.topShowLog appendString:cutStr];
+                        [self.currentShowLog deleteCharactersInRange:NSMakeRange(0,self.bottomShowLog.length)];
+                    }
                 }
             }
         }
