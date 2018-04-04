@@ -118,6 +118,7 @@ static int const clearbufferSize = 4000;
         [tmpsearch appendString:[LogScreen getInstance].bottomShowLog];
         int startLocation = -1;
         if (tmpsearch.length > 0) {
+            //更新搜索结果
             [[LogScreen getInstance].logViewVC setSearchLabelNumIntext:tmpsearch btnSearch:true];
             //显示搜索结果的第一个word在当前log上面
             NSMutableArray* searchResult = [LogScreen getInstance].logViewVC.searchResult;
@@ -225,7 +226,6 @@ static int const clearbufferSize = 4000;
         }else{
             [self.bottomShowLog appendString:log];
         }
-        
     }
     else{
         //自动滚动模式
@@ -273,7 +273,6 @@ static int const clearbufferSize = 4000;
                 }
             }
         }
-//        [self updateUIWithBottom:[LogScreen getInstance].logViewVC.searchStr.length==0];
     }
     [self.logViewVC addSearchLabelNumInaddedtext:log];
 

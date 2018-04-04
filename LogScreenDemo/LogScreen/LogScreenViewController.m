@@ -194,7 +194,7 @@
     }
     return ret;
 }
-//在text（这个是所有要搜索的日志）中搜索self.searchStr然后更新搜索结果到self.searchResult和self.searchNum
+
 -(void) setSearchLabelNumIntext: (NSString*)text btnSearch:(bool)btn{
     if (text !=nil && text.length>0) {
         //更新所有日志的长度
@@ -211,7 +211,7 @@
         }
     }
 }
-//在text(这个是新添加的日志)中搜索self.searchStr然后更新搜索结果到self.searchResult和self.searchNum
+
 -(void) addSearchLabelNumInaddedtext: (NSString*)text{
     if (text !=nil && text.length>0) {
         NSMutableArray* tmp= [self search:self.searchStr in:text];
@@ -248,32 +248,13 @@
         self.scrollViewDidEndDecelerating();
     }
 }
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
-    if (scrollView == self.logTextView) {
-        int a = 0;
-    }
-}
-- (BOOL)textViewShouldBeginEditing:(UITextView *)textView{
-    int a = 0;
-    return YES;
-}
 #pragma mark UITextFieldDelegate implementation
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
-    NSString* str = textField.text;
-    return YES;
-}
-
-- (BOOL)textFieldShouldEndEditing:(UITextField *)textField{
-    NSString* str = textField.text;
-    return YES;
-}
 
 - (BOOL)textFieldShouldClear:(UITextField *)textField{
     [self.searchResult removeAllObjects];
     return YES;
 }
 
-//点击了search按钮
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
     self.searchStr = textField.text;
     [textField resignFirstResponder];
@@ -284,7 +265,6 @@
         }
         if (self.searchResult.count>0) {
             self.searchResultShowIndex = 0;
-            //NSRange range = NSMakeRange(((NSNumber*)[self.searchResult firstObject]).unsignedIntegerValue, self.searchStr.length);
             if (startLoction >= 0) {
                 NSRange range = NSMakeRange(startLoction, self.searchStr.length);
                 [self selectAndVisibleWordWithRange:range];
@@ -297,10 +277,8 @@
     return YES;
 }
 
-//监听搜索框输入变化
 - (void)searchTextFieldDidChangeValue:(UITextField *)textField{
     self.searchStr = textField.text;
-    //通过代理，代理出去
     if (self.searchTextFieldDidChangeValue) {
         self.searchTextFieldDidChangeValue(self.searchStr);
     }

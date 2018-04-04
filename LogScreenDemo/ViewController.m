@@ -28,7 +28,7 @@
 
 - (void)giveLog {
     self.count++;
-    if (self.count > 300) {
+    if (self.count > 10000) {
         return;
     }
     NSLog(@"NSTimer count = %d",self.count);
@@ -46,7 +46,7 @@
 - (IBAction)test:(id)sender {
     [[LogScreen getInstance] changeVisible];
     self.count = 0;
-    [NSTimer scheduledTimerWithTimeInterval:0.2 target:self selector:@selector(giveLog) userInfo:nil repeats:YES];
+    [NSTimer scheduledTimerWithTimeInterval:0.01 target:self selector:@selector(giveLog) userInfo:nil repeats:YES];
 }
 
 

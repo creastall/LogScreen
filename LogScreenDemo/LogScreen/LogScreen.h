@@ -8,9 +8,7 @@
 
 + (instancetype)getInstance;
 
-
 - (void) logRecord;
-
 
 - (void) changeVisible;
 
