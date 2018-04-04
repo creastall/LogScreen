@@ -28,7 +28,7 @@
 
 - (void)giveLog {
     self.count++;
-    if (self.count > 1000) {
+    if (self.count > 300) {
         return;
     }
     NSLog(@"NSTimer count = %d",self.count);

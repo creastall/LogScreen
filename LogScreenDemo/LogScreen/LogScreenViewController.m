@@ -24,6 +24,16 @@
 @property (weak, nonatomic) IBOutlet UILabel *searchNum;
 @property (weak, nonatomic) IBOutlet UITextField *searchText;
 @property(assign,nonatomic) int allSearchLogLength;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *switchTopConstraintlandscape;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *logTextViewToplandscape;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *searchTextLeftlandscape;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *searchToplandscape;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *cleanBtnToplandscape;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *closeBtnToplandscape;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *lastBtnToplandscape;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *nextBtnToplandscape;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *nextBtnRightlandscape;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *searchNumToplandscape;
 
 @end
 
@@ -51,9 +61,49 @@
     self.nextBtn.layer.borderWidth = 1.0f;
     self.nextBtn.layer.borderColor = [UIColor colorWithRed:12/255.0 green:95/255.0 blue:250/255.0 alpha:1.0].CGColor;
     
+    self.searchText.layer.cornerRadius = 5.0f;
+    self.searchText.layer.borderWidth = 1.0f;
+    self.searchText.layer.borderColor = [UIColor colorWithRed:12/255.0 green:95/255.0 blue:250/255.0 alpha:1.0].CGColor;
+    
     
     [self.searchText addTarget:self action:@selector(searchTextFieldDidChangeValue:) forControlEvents:UIControlEventEditingChanged];
     
+}
+
+- (void)viewWillLayoutSubviews
+{
+    [super viewWillLayoutSubviews];
+    [self setupViewForOrientation];
+}
+
+- (void)setupViewForOrientation{
+     UIInterfaceOrientation oritentation = [[UIApplication sharedApplication] statusBarOrientation];
+    if (UIInterfaceOrientationIsPortrait(oritentation)) {
+        self.switchTopConstraintlandscape.priority = UILayoutPriorityDefaultLow;
+        self.logTextViewToplandscape.priority = UILayoutPriorityDefaultLow;
+        self.searchTextLeftlandscape.priority = UILayoutPriorityDefaultLow;
+        self.searchToplandscape.priority = UILayoutPriorityDefaultLow;
+        self.cleanBtnToplandscape.priority = UILayoutPriorityDefaultLow;
+        self.closeBtnToplandscape.priority = UILayoutPriorityDefaultLow;
+        self.lastBtnToplandscape.priority = UILayoutPriorityDefaultLow;
+        self.nextBtnToplandscape.priority = UILayoutPriorityDefaultLow;
+        self.nextBtnRightlandscape.priority = UILayoutPriorityDefaultLow;
+        self.searchNumToplandscape.priority = UILayoutPriorityDefaultLow;
+        
+        
+    }
+    else if(UIInterfaceOrientationIsLandscape(oritentation)){
+        self.switchTopConstraintlandscape.priority = UILayoutPriorityDefaultHigh;
+        self.logTextViewToplandscape.priority = UILayoutPriorityDefaultHigh;
+        self.searchTextLeftlandscape.priority = UILayoutPriorityDefaultHigh;
+        self.searchToplandscape.priority = UILayoutPriorityDefaultHigh;
+        self.cleanBtnToplandscape.priority = UILayoutPriorityDefaultHigh;
+        self.closeBtnToplandscape.priority = UILayoutPriorityDefaultHigh;
+        self.lastBtnToplandscape.priority = UILayoutPriorityDefaultHigh;
+        self.nextBtnToplandscape.priority = UILayoutPriorityDefaultHigh;
+        self.nextBtnRightlandscape.priority = UILayoutPriorityDefaultHigh;
+        self.searchNumToplandscape.priority = UILayoutPriorityDefaultHigh;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
