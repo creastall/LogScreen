@@ -20,6 +20,22 @@
 
 @property (nonatomic, strong) void(^scrollViewDidEndDecelerating)();
 
+@property (nonatomic, strong) void(^searchTextFieldDidChangeValue)(NSString* str);
+
+@property (nonatomic, strong) int(^textFieldShouldReturnBlock)(int index);
+
 @property (weak, nonatomic) IBOutlet UITextView *logTextView;
+
+@property (weak, nonatomic) IBOutlet UISegmentedControl *logSwitch;
+
+@property(strong,nonatomic) NSMutableArray* searchResult;
+
+//搜索输入框每次检查到变动的时候更新这个值
+@property(strong,nonatomic) NSString* searchStr;
+
+
+-(void) setSearchLabelNumIntext: (NSString*)text btnSearch:(bool)btn;
+
+-(void) addSearchLabelNumInaddedtext: (NSString*)text;
 
 @end
