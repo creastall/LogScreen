@@ -17,7 +17,7 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    [[LogScreen getInstance] logRecord];
+    [[LogScreen getInstance] logRecordMaxSize:20000];
     // Override point for customization after application launch.
     return YES;
 }
