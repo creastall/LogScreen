@@ -96,10 +96,12 @@
             [logm.topShowLog setString:@""];
             [logm.currentShowLog setString:@""];
             [logm.bottomShowLog setString:@""];
-            [logm updateUIWithBottom:true];
+            
         }else if (logm.index == 1) {
             [[NSFileManager defaultManager]removeItemAtPath:[logm loadPathWithName:CarshFileName] error:nil];
+            logm.crashInfoString = @"";
         }
+        [logm updateUIWithBottom:true];
     };
     self.logViewVC.closeBlock = ^(){
         [[LogScreen getInstance] changeVisible];

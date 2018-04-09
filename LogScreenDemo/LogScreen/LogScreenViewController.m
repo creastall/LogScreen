@@ -111,6 +111,16 @@
     // Dispose of any resources that can be recreated.
 }
 - (IBAction)switchClick:(UISegmentedControl *)sender {
+    bool hidden = sender.selectedSegmentIndex != 0;
+    self.searchNum.hidden = hidden;
+    self.searchText.hidden = hidden;
+    self.lastBtn.hidden = hidden;
+    self.nextBtn.hidden = hidden;
+    if (hidden) {
+        if([self.searchText isFirstResponder]){
+            [self.searchText resignFirstResponder];
+        }
+    }
     if (self.indexBlock) {
         self.indexBlock(sender.selectedSegmentIndex);
     }
