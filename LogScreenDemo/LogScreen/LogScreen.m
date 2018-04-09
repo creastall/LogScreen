@@ -50,7 +50,12 @@
 
 - (LogScreenViewController*)logViewVC{
     if (!_logViewVC) {
+#if FrameWorkSDK
+        NSBundle* logviewBundle = [NSBundle bundleWithPath: [[NSBundle mainBundle] pathForResource:@"LogScreenBundle" ofType: @"bundle"]];
+        _logViewVC = [[UIStoryboard storyboardWithName:@"logView" bundle:logviewBundle] instantiateInitialViewController];
+#else
         _logViewVC = [[UIStoryboard storyboardWithName:@"logView" bundle:nil] instantiateInitialViewController];
+#endif
         _logViewVC.view.hidden = YES;
         _logViewVC.view.alpha = 0.0f;
         [[UIApplication sharedApplication].keyWindow addSubview:_logViewVC.view];
