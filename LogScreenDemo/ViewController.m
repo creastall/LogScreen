@@ -7,7 +7,6 @@
 //
 
 #import "ViewController.h"
-#import "LogScreen.h"
 
 
 @interface ViewController ()
@@ -44,7 +43,6 @@
     // Dispose of any resources that can be recreated.
 }
 - (IBAction)test:(id)sender {
-    [[LogScreen getInstance] changeVisible];
     self.count = 0;
     [NSTimer scheduledTimerWithTimeInterval:0.01 target:self selector:@selector(giveLog) userInfo:nil repeats:YES];
 }

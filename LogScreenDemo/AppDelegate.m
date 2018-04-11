@@ -7,7 +7,6 @@
 //
 
 #import "AppDelegate.h"
-#import "LogScreen.h"
 
 @interface AppDelegate ()
 
@@ -17,7 +16,6 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    [[LogScreen getInstance] logRecordMaxSize:20000];
     // Override point for customization after application launch.
     return YES;
 }
