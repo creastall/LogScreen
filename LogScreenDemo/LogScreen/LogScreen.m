@@ -28,8 +28,12 @@
 @property(assign,nonatomic) int errFd;
 
 @property(assign,nonatomic) int bufferMaxSize;
+
 @property(assign,nonatomic) int clearbufferSize;
-@property(assign,nonatomic) bool isRegistered;
+/**
+ 是否安装了这个sdk
+ */
+@property(assign,nonatomic) bool installed;
 
 @end
 
@@ -43,7 +47,7 @@
         log.currentShowLog = [[NSMutableString alloc] init];
         log.topShowLog = [[NSMutableString alloc] init];
         log.bottomShowLog = [[NSMutableString alloc] init];
-        log.isRegistered = false;
+        log.installed = false;
         [log readCarshInfo];
         
     });
@@ -68,6 +72,9 @@
 
 
 - (void)changeVisible {
+    if (!self.installed) {
+        return;
+    }
     !self.logViewVC.view.hidden ? [self hideLogView] : [self showLogView];
 }
 
@@ -195,12 +202,12 @@
 
 //启动标准输出定向
 - (void) logRecordMaxSize:(int)maxSize{
-    if (self.isRegistered) {
+    if (self.installed) {
         return;
+    }else{
+        self.installed = true;
     }
-    else{
-        self.isRegistered = true;
-    }
+    
     self.bufferMaxSize = maxSize;
     self.clearbufferSize = maxSize/2;
     //注册奔溃函数

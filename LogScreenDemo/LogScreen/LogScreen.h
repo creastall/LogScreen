@@ -7,7 +7,6 @@
 
 @interface LogScreen : NSObject<UITextViewDelegate>
 
-
 + (instancetype)getInstance;
 
 - (void) logRecordMaxSize:(int)maxSize;
